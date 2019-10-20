@@ -1,0 +1,29 @@
+[Unit]
+Description=apt-cacher-ng container
+# The following is for centos / redhat and also works with debian 10.
+# On some other systems you might instead use systemd-networkd-wait-online.service
+After=network-online.service network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0007
+Restart=always
+#Set the timeout off in case pulling the image is slow
+TimeoutStartSec=0
+Environment="VOLUMES=-v /d/local/data/apt-cacher-ng:/acng/cache"
+Environment="IMAGE=docker-acng:latest"
+Environment="OPTIONS="
+Environment="ENV="
+Environment="RM=--rm"
+Environment="PORTS=--publish 3142:3142"
+ExecStartPre=-/usr/bin/docker stop %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run -i --name %p $RM $ENV $PORTS $VOLUMES $IMAGE $OPTIONS
+#ExecStop=-/usr/bin/docker logs %p
+ExecStop=-/usr/bin/docker stop $STOP_OPTIONS %p
+
+[Install]
+WantedBy=multi-user.target
