@@ -57,6 +57,15 @@ function run-acng()
 {
     local executable=$(command -v apt-cacher-ng)
 
+    ( 
+        cd /etc/apt-cacher-ng/backends
+        shopt -s nullglob
+        for f in backends_*
+        do
+            ln -sf backends/"${f}" /etc/apt-cacher-ng/"${f}"
+        done
+    )
+
     if [[ "${VERBOSE}" == "1" ]]
     then
         echo "Defaults:"
@@ -64,6 +73,9 @@ function run-acng()
         echo
         echo "Configuration:"
         sed -n -e '/^(#|$)/ d' -e '/./ { s/^/    /; p }' < "/acng/acng.conf"
+        echo
+        echo "Backends.."
+        ls -al /etc/apt-cacher-ng/backend*
         echo
         echo "Continuing.."
     fi

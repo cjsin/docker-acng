@@ -1,4 +1,4 @@
-TAG             := docker-acng
+TAG             := docker-acng2
 SOURCES         := $(shell ls *.conf *.sh )
 TIMESTAMP       := $(shell stat -c '%Y' $(SOURCES) | sort -n | tail -n1 | cut -d' ' -f1)
 EPOCH           := $(shell date +%s)

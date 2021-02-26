@@ -13,12 +13,12 @@ UMask=0007
 Restart=always
 #Set the timeout off in case pulling the image is slow
 TimeoutStartSec=0
-Environment="VOLUMES=-v /d/local/data/apt-cacher-ng:/acng/cache"
-Environment="IMAGE=docker-acng:latest"
+Environment="VOLUMES=-v /d/local/data/apt-cacher-ng2:/acng/cache -v /etc/default/apt-cacher-backends:/acng/backends"
+Environment="IMAGE=docker-acng2:latest"
 Environment="OPTIONS="
 Environment="ENV="
 Environment="RM=--rm"
-Environment="PORTS=--publish 3142:3142"
+Environment="PORTS=--publish 3143:3143"
 ExecStartPre=-/usr/bin/docker stop %p
 ExecStartPre=-/usr/bin/docker rm %p
 ExecStart=/usr/bin/docker run -i --name %p $RM $ENV $PORTS $VOLUMES $IMAGE $OPTIONS
